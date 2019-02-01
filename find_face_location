@@ -1,0 +1,36 @@
+from PIL import Image
+import face_recognition
+
+
+n_face = 0
+
+for i in range(1, 301):
+
+    # Load the jpg file into a numpy array
+    read_dir = "C:/naverImages/"
+    image = face_recognition.load_image_file(read_dir + str(i) + ".jpg")
+
+    # Find all the faces in the image using the default HOG-based model.
+    face_locations = face_recognition.face_locations(image)
+
+    print("I found {} face(s) in this photograph.".format(len(face_locations)))
+    n_face += len(face_locations)
+
+    for j,face_location in enumerate(face_locations):
+
+        # Print the location of each face in this image
+        top, right, bottom, left = face_location
+        # print("A face is located at pixel location Top: {}, Left: {}, Bottom: {}, Right: {}".format(top, left, bottom, right))
+
+        # crop the image
+        face_image = image[top:bottom, left:right]
+        pil_image = Image.fromarray(face_image)
+
+        # resize the image
+        pil_image_rs = pil_image.resize(size=(64,64), resample=0, box=None)
+        
+        # write the image
+        write_dir = "C:/naverImages_crop/"
+        pil_image_rs.save(write_dir + "train_" + str(i) + '_' + str(j+1) + ".jpg")
+
+print(n_face)
