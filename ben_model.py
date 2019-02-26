@@ -153,7 +153,7 @@ Conolution layer의 filter와 동일한 개념이라고 생각하면 됩니다.
 
 W2 = tf.Variable(tf.random_normal([3, 3, 32, 64], stddev=0.01))
 L2 = tf.nn.conv2d(L1, W2, strides=[1, 1, 1, 1], padding='SAME')
-# [14,14,32] --> [14,14,64] (64개의 featuremap)
+# [14,14,32] --> [14,14,64] (64개의 feature map)
 L2 = tf.nn.relu(L2)
 L2 = tf.nn.max_pool(L2, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 # [14,14,64] --> [7,7,64]
@@ -182,22 +182,23 @@ b = tf.Variable(tf.random_normal([2]))
 # bias를 선언하여 b에 저장합니다. output의 shape이 10이므로 shape을 10으로 설정
 logits = tf.matmul(L2_flat, W3) + b
 
+
 # define cost function
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=Y))
 # loss function을 최소화하는 경사하강법 종류 중 adam optimizer 을 사용
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 
-training_epochs = 30
+training_epochs = 20
 '''
  학습 횟수를 설정합니다.
 '''
-batch_size = 200
+batch_size = 100
 '''
 효과적인 모델 학습을 위해 batch size를 설정합니다.
 batch size는 학습 할 때 몇개의 데이터를 한번에 학습하는가에 관한 설정입니다.
-본 실험에서는 42,000개의 데이터를 학습하므로, batch size는 1~42,000까지 설정할 수 있습니다.
-200으로 설정했으므로 한번 학습하는데 200개의 데이터를 사용한다는 의미입니다.
+본 실험에서는 1342개의 데이터를 학습하므로, batch size는 1~1342까지 설정할 수 있습니다.
+100으로 설정했으므로 한번 학습하는데 100개의 데이터를 사용한다는 의미입니다.
 '''
 
 # initialize
@@ -210,7 +211,7 @@ sess.run(tf.global_variables_initializer())  # 모든 변수의 weight값을 초
 print('Learning started. It takes sometime.')
 for epoch in range(training_epochs):
     avg_cost = 0
-    total_batch = int(len(train_input) / batch_size)
+    total_batch = int(len(train_input) / batch_size)  # 1342 / 100 = 13
     '''
     1 epoch에 몇회 학습할 것인지를 설정합니다.
     train_input에 저장된 데이터는 42,000개이므로 len(train_input)은 42,000을,
@@ -218,8 +219,8 @@ for epoch in range(training_epochs):
     '''
 
     for i in range(total_batch):
-        start = ((i + 1) * batch_size) - batch_size  # 0, 200, 400, ..
-        end = ((i + 1) * batch_size)  # 200, 400, 600 ..
+        start = ((i + 1) * batch_size) - batch_size  # 0, 100, 200, ..
+        end = ((i + 1) * batch_size)  # 100, 200, 300 ..
         batch_xs = train_input[start:end]
         batch_ys = train_label[start:end]
         feed_dict = {X: batch_xs, Y: batch_ys}
@@ -231,6 +232,21 @@ for epoch in range(training_epochs):
 print('Learning Finished!')
 
 # Test model and check accuracy
-correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(Y, 1))
+correct_prediction = logits
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-print('Accuracy:', sess.run(accuracy, feed_dict={X: test_input, Y: test_label}))
+a = sess.run(correct_prediction, feed_dict={X: test_input})
+# print('Accuracy:', sess.run(correct_prediction, feed_dict={X: test_input}))
+
+# 소프트맥스 함수
+def softmax(x):
+    c = np.max(x)
+    return np.exp(x-c) / np.sum(np.exp(x-c))
+
+predict_result = []
+
+for i in range(len(a)):
+    sm = softmax(a[i])
+    print(sm)
+    predict_result.append(np.argmax(sm))
+
+print(predict_result)
