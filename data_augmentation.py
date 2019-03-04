@@ -4,12 +4,13 @@ import os, sys
 
 
 # 특정 디렉토리에 이미지 조회하기
-root_dir_path = "./train_data/ben/"  # 목표 이미지 디렉토리
-save_folder = "./augmentation_images/"
+root_dir_path = "./train_data/no_ben/"  # 목표 이미지 디렉토리
+save_folder = "./augmentation_images_no_ben/"  # 저장할 디렉토리
 root_dir = os.listdir(root_dir_path)
 print(root_dir)  # 742장의 이미지가 현재 존재한다
 
 
+# 저장
 def save(keyPath, file_name, cv_img, rate, type):
     """
     save 메소드는 이미지 전처리 전에 저장해야 하며, 5개의 인자를 받는다
@@ -28,7 +29,7 @@ def save(keyPath, file_name, cv_img, rate, type):
     cv2.imwrite(saved_name, cv_img)
 
 
-# scaling
+# 데이터 확장(증강)
 def augment(keyName, rate=None, if_scale=False):
     saved_dir = "./augmentation_images"
     keyPath = os.path.join(root_dir_path, keyName)  # keypath direct to root path
@@ -110,6 +111,7 @@ def data_rotate(saved_dir, data, img, rate, type, saving_enable=False):
         return "Failed"
 
 
+# 실행
 def main_TransformImage(keyNames):
     try:
         for keyname in keyNames:
