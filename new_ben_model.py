@@ -56,12 +56,12 @@ train_input = np.reshape(train_input, (-1, 4096))
 # print(train_input[0])
 # [255 251 248 ...  62  76  64]
 # print('train_input.shape:', train_input.shape)
-# train_input.shape: (1342, 4096)
+# train_input.shape: (1328, 4096)
 
 
 train_label = np.reshape(train_label, (-1, 2))
 # print('train_label:', train_label.shape)
-# train_label: (1342, 2)
+# train_label: (1328, 2)
 
 
 train_input = np.array(train_input).astype(np.float32)
@@ -102,8 +102,8 @@ test_label = np.array(test_label).astype(np.float32)
 
 # set hyper parameters
 batch_size = 100
-learning_rate = 0.0001
-training_epochs = 20
+learning_rate = 0.001
+training_epochs = 33
 
 # set random_seed
 tf.set_random_seed(1)
@@ -139,11 +139,11 @@ L2 = tf.nn.max_pool(L2, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME'
 W3 = tf.Variable(tf.random_normal([3, 3, 64, 128], stddev=0.01))
 L3 = tf.nn.conv2d(L2, W3, strides=[1, 1, 1, 1], padding='SAME')
 L3 = tf.nn.relu(L3)
-L3 = tf.nn.max_pool(L3, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
+# L3 = tf.nn.max_pool(L3, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME')
 
 
-L3_flat = tf.reshape(L3, [-1, 16 * 16 * 64])  # 다시 평평하게
-W4 = tf.get_variable("W4", shape=[16 * 16 * 64, 2], initializer=tf.contrib.layers.xavier_initializer())
+L3_flat = tf.reshape(L3, [-1, 16 * 16 * 128])  # 다시 평평하게
+W4 = tf.get_variable("W4", shape=[16 * 16 * 128, 2], initializer=tf.contrib.layers.xavier_initializer())
 
 
 # set bias of filter
@@ -167,7 +167,7 @@ print('Learning started. It takes sometime.')
 
 for epoch in range(training_epochs):
     avg_cost = 0
-    total_batch = int(len(train_input) / batch_size)  # 1342 / 100 = 13
+    total_batch = int(len(train_input) / batch_size)  # 1328 / 100 = 13
 
     for i in range(total_batch):
         start = ((i + 1) * batch_size) - batch_size  # 0, 100, 200, ..
