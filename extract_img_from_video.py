@@ -20,5 +20,7 @@ while True:
         print('Capturing img... please wait')
     count += 1
 
-    if count >= 12354:
-        print('Completed')
+    if count >= 12354:  # 12354 = 426초(비디오길이) x 29프레임/초
+        break
+
+print('Completed')
