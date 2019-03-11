@@ -4,8 +4,8 @@ import os, sys
 
 
 # 특정 디렉토리에 이미지 조회하기
-root_dir_path = "./train_data/no_ben/"  # 목표 이미지 디렉토리
-save_folder = "./augmentation_images_no_ben/"  # 저장할 디렉토리
+root_dir_path = "C:/Users/kwang/Desktop/taeim2/"  # 목표 이미지 디렉토리
+save_folder = "C:/Users/kwang/Desktop/taeim2_aug/"  # 저장할 디렉토리
 root_dir = os.listdir(root_dir_path)
 print(root_dir)  # 742장의 이미지가 현재 존재한다
 
@@ -14,7 +14,6 @@ print(root_dir)  # 742장의 이미지가 현재 존재한다
 def save(keyPath, file_name, cv_img, rate, type):
     """
     save 메소드는 이미지 전처리 전에 저장해야 하며, 5개의 인자를 받는다
-
     keyPath: 원본 이미지 경로
     file_name: 원래의 이미지 파일명
     cv_img: 전체 이미지 signal
@@ -80,11 +79,11 @@ def data_flip(saved_dir, data, img, rate, type, saving_enable=False):
     img = cv2.flip(img, type)  # 1은 좌우 반전, 0은 상하 반전
     try:
         if type == 0:
-            type = "_horizen_"
+            type = "_horizen"
         elif type == 1:
-            type = "_vertical_"
+            type = "_vertical"
         elif type == -1:
-            type = "_bothFlip_"
+            type = "_bothFlip"
         if saving_enable == True:
             save(saved_dir, data, img, rate, type)
 
@@ -118,7 +117,32 @@ def main_TransformImage(keyNames):
             img1 = root_dir_path + keyname
             src = cv2.imread(img1)
             data_flip(save_folder, keyname, src, 20, 1, True)
-            print("success")
+            data_rotate(save_folder, keyname, src, 5, '_rotate5', True)
+            data_rotate(save_folder, keyname, src, 10, '_rotate10', True)
+            data_rotate(save_folder, keyname, src, 15, '_rotate15', True)
+            data_rotate(save_folder, keyname, src, 20, '_rotate20', True)
+            data_rotate(save_folder, keyname, src, 25, '_rotate25', True)
+            data_rotate(save_folder, keyname, src, 30, '_rotate30', True)
+            data_rotate(save_folder, keyname, src, 35, '_rotate35', True)
+            data_rotate(save_folder, keyname, src, 40, '_rotate40', True)
+            data_rotate(save_folder, keyname, src, 45, '_rotate45', True)
+            data_rotate(save_folder, keyname, src, 50, '_rotate50', True)
+            data_rotate(save_folder, keyname, src, 55, '_rotate55', True)
+            data_rotate(save_folder, keyname, src, 60, '_rotate60', True)
+            data_rotate(save_folder, keyname, src, 300, '_rotate300', True)
+            data_rotate(save_folder, keyname, src, 305, '_rotate305', True)
+            data_rotate(save_folder, keyname, src, 310, '_rotate310', True)
+            data_rotate(save_folder, keyname, src, 315, '_rotate315', True)
+            data_rotate(save_folder, keyname, src, 320, '_rotate320', True)
+            data_rotate(save_folder, keyname, src, 325, '_rotate325', True)
+            data_rotate(save_folder, keyname, src, 330, '_rotate330', True)
+            data_rotate(save_folder, keyname, src, 335, '_rotate335', True)
+            data_rotate(save_folder, keyname, src, 340, '_rotate340', True)
+            data_rotate(save_folder, keyname, src, 345, '_rotate345', True)
+            data_rotate(save_folder, keyname, src, 350, '_rotate350', True)
+            data_rotate(save_folder, keyname, src, 355, '_rotate355', True)
+
+            print("Success")
 
         return "Augment Done!"
     except Exception as e:
