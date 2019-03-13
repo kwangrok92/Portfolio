@@ -2,8 +2,11 @@ from PIL import Image
 import face_recognition
 import os
 
-read_path = "./cap_video3/"
-write_path = "./cap_video3_crop/"
+# 저장할 폴더 생성
+os.mkdir("./cap_video_elijah1_crop")
+
+read_path = "./cap_video_elijah1/"
+write_path = "./cap_video_elijah1_crop/"
 n_face = 0
 
 img = os.listdir(read_path)
@@ -33,6 +36,6 @@ for i in range(1, len(img)+1):
 
         # write the image
         write_dir = write_path
-        pil_image_rs.save(write_dir + "taeim_" + str(i) + '_' + str(j + 1) + ".jpg")
+        pil_image_rs.save(write_dir + "elijah_" + str(i) + '_' + str(j + 1) + ".jpg")
 
 print(n_face)
