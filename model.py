@@ -220,49 +220,50 @@ for epoch in range(training_epochs):
 print('Learning Finished!')
 
 
-# Test model and check accuracy
-correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(Y, 1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-print('Accuracy:', sess.run(accuracy, feed_dict={X: test_input, Y: test_label, batch_prob: False, keep_prob: 1}))
-
-
 # # Test model and check accuracy
-# correct_prediction = logits
+# correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(Y, 1))
 # accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-# a = sess.run(correct_prediction, feed_dict={X: test_input, batch_prob: False, keep_prob: 1})
-#
-#
-# # 소프트맥스 함수
-# def softmax(a):
-#     c = np.max(a)
-#     exp_a = np.exp(a - c)
-#     sum_exp_a = np.sum(exp_a)
-#     y = exp_a / sum_exp_a
-#
-#     return y
-#
-#
-# predict_result = []
-#
+# print('Accuracy:', sess.run(accuracy, feed_dict={X: test_input, Y: test_label, batch_prob: False, keep_prob: 1}))
+
+
+# Test model and check accuracy
+correct_prediction = logits
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+a = sess.run(correct_prediction, feed_dict={X: test_input, batch_prob: False, keep_prob: 1})
+
+
+# 소프트맥스 함수
+def softmax(a):
+    c = np.max(a)
+    exp_a = np.exp(a - c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+
+    return y
+
+
+predict_result = []
+
+for i in range(len(a)):
+    predict_result.append(np.argmax(a[i]))
+
+
 # for i in range(len(a)):
-#     predict_result.append(np.argmax(a[i]))
-#
-#
-# # for i in range(len(a)):
-# #     sm = softmax(a[i])
-# #     print(a[i], sm)
-# #     predict_result.append(np.argmax(sm))
-#
-#
-# correct = 0
-#
-# for i in predict_result[:30]:
-#     if i == 0:
-#         correct += 1
-#
-# for i in predict_result[30:]:
-#     if i == 1:
-#         correct += 1
-#
-# print('acc:', round(correct/60 * 100, 2), '%')
-# print(predict_result[:30], "\n", predict_result[30:])
+#     sm = softmax(a[i])
+#     print(a[i], sm)
+#     predict_result.append(np.argmax(sm))
+
+
+correct = 0
+
+for i in predict_result[:100]:
+    if i == 0:
+        correct += 1
+
+for i in predict_result[100:]:
+    if i == 1:
+        correct += 1
+
+print('acc:', round(correct/200 * 100, 2), '%')
+print('not elijah:', predict_result[:100].count(0), '개 / 100개 맞춤', "\n",
+      'elijah:', predict_result[100:].count(1), '개 / 100개 맞춤')
