@@ -30,7 +30,7 @@ while True:
 
     cv2.imshow("Face Landmark Detector", frame)  # 원본
     # frame_rs = cv2.resize(frame, None, fx=1.5, fy=1.5, interpolation=cv2.INTER_CUBIC)
-    # cv2.imshow("Frame", frame_rs)  # 1.5배 확대
+    # cv2.imshow("Face Landmark Detector", frame_rs)  # 1.5배 확대
 
     # 아무 키를 누르면 창 종료 (키를 누르지 않으면 -1 이 반환되기 때문에)
     if cv2.waitKey(10) > -1:
