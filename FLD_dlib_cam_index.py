@@ -3,7 +3,7 @@ import dlib
 
 # cap = cv2.VideoCapture(0)  # Cam
 cap = cv2.VideoCapture("Zuckerburg.mp4")  # Input the Video
-# cap.set(cv2.CAP_PROP_FPS, 100)
+cap.set(cv2.CAP_PROP_FPS, 30)
 
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
